@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "635776089667",
+    "project_id": "spender-revamped",
+    "storage_bucket": "spender-revamped.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635776089667:android:7c200d7a923e422bf29ef6",
+        "android_client_info": {
+          "package_name": "com.example.spender.spender_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUbd8fXN4Fd-bP5KHje20eF91SeFdtYzw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
