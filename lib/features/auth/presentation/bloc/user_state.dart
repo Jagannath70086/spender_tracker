@@ -9,7 +9,7 @@ class UserState extends Equatable {
 
   final UserModel? userModel;
 
-  UserState._({required this.status, this.errorMessage, this.userModel});
+  const UserState._({required this.status, this.errorMessage, this.userModel});
 
   factory UserState.initial() => UserState._(status: UserStatus.initial);
 

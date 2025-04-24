@@ -7,7 +7,7 @@ class AuthRemoteDatasource {
   AuthRemoteDatasource({required this.dio});
 
   Future<UserModel> loginWithGoogle(String token) async {
-    var request = await dio.post('users/login', data: {'token': token});
+    var request = await dio.post('/users/login', data: {'token': token});
     return UserModel.fromJson(request.data);
   }
 }

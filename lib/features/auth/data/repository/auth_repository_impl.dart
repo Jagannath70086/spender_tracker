@@ -21,11 +21,11 @@ class AuthRepositoryImpl implements AuthRepository{
         return Either.left(AuthFailure(message: "Sign-in cancelled by user."));
       }
 
-      final GoogleSignInAuthentication? googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
       final credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth?.accessToken,
-          idToken: googleAuth?.idToken
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken
       );
 
       final firebaseCredentials = await FirebaseAuth.instance.signInWithCredential(credential);
@@ -33,13 +33,12 @@ class AuthRepositoryImpl implements AuthRepository{
       final firebaseToken = await firebaseCredentials.user?.getIdToken();
 
       final request = await authRemoteDatasource.loginWithGoogle(firebaseToken!);
-
       return Either.right(request);
     }
     on DioException catch (e) {
       return Either.left(AuthFailure(message: e.response?.data['error']));
     }
-    on Exception catch(e) {
+    on Exception {
       return Either.left(AuthFailure(message: "Auth failure"));
     }
   }
