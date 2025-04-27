@@ -7,13 +7,15 @@ import 'package:spender_tracker/core/theme/app_theme.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_bloc.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_event.dart';
 import 'package:spender_tracker/features/auth/presentation/pages/auth_page.dart';
+import 'package:spender_tracker/features/bottom_navbar/presentation/bloc/navigation_bloc.dart';
+import 'package:spender_tracker/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:spender_tracker/features/theme/domain/entity/theme_entity.dart';
 import 'package:spender_tracker/features/theme/presentation/bloc/theme_events.dart';
 import 'package:spender_tracker/features/theme/presentation/bloc/theme_state.dart';
 import 'package:spender_tracker/firebase_options.dart';
 
 import 'features/auth/presentation/bloc/user_state.dart';
-import 'features/home/presentation/page/home_page.dart';
+import 'features/home/presentation/pages/home_page.dart';
 import 'features/theme/presentation/bloc/theme_bloc.dart';
 
 Future<void> main() async {
@@ -25,6 +27,8 @@ Future<void> main() async {
       providers: [
         BlocProvider(create: (context) => getIt<UserBloc>()..add(GetUserEvent())),
         BlocProvider(create: (context) => getIt<ThemeBloc>()..add(GetThemeEvent())),
+        BlocProvider(create: (context) => getIt<NavigationBloc>()),
+        BlocProvider(create: (context) => getIt<DashboardBloc>()),
       ],
       child: BlocBuilder<ThemeBloc,ThemeState>(
         builder: (context,state) {
@@ -37,7 +41,7 @@ Future<void> main() async {
                 listener: (context, state) {
                   if (state.status == UserStatus.success) {
                     AppRouter.router.go(HomePage.route);
-                  } else if (state.status == UserStatus.error) {
+                  } else if (state.status == UserStatus.error || state.status == UserStatus.logout) {
                     AppRouter.router.go(AuthPage.route);
                   }
                 },

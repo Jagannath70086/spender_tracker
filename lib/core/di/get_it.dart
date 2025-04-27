@@ -8,6 +8,10 @@ import 'package:spender_tracker/features/auth/data/repository/user_repository_im
 import 'package:spender_tracker/features/auth/domain/repository/auth_repository.dart';
 import 'package:spender_tracker/features/auth/domain/repository/user_repository.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_bloc.dart';
+import 'package:spender_tracker/features/bottom_navbar/data/repository/navigation_repository_impl.dart';
+import 'package:spender_tracker/features/bottom_navbar/domain/repository/navigation_repository.dart';
+import 'package:spender_tracker/features/bottom_navbar/presentation/bloc/navigation_bloc.dart';
+import 'package:spender_tracker/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import 'package:spender_tracker/features/theme/data/datasource/theme_local_datasource.dart';
 import 'package:spender_tracker/features/theme/data/repository/theme_repository_impl.dart';
 import 'package:spender_tracker/features/theme/domain/repository/theme_repository.dart';
@@ -24,6 +28,7 @@ Future<void> setup() async {
   registerRepository();
   registerBloc();
   registerUseCases();
+  setupNavigationDependencies();
 }
 
 void registerApiClient(){
@@ -50,6 +55,8 @@ void registerRepository(){
 void registerBloc(){
   getIt.registerFactory(() => UserBloc(authRepository: getIt(), userRepository: getIt()));
   getIt.registerFactory(() => ThemeBloc(getThemeUseCase: getIt(), saveThemeUseCase: getIt()));
+  getIt.registerFactory(() => NavigationBloc(repository: getIt()));
+  getIt.registerFactory(() => DashboardBloc());
 }
 
 Future<void> registerSharedPreferences() async {
@@ -61,3 +68,6 @@ void registerUseCases() {
   getIt.registerSingleton(SaveThemeUseCase(themeRepository: getIt()));
 }
 
+void setupNavigationDependencies() {
+  getIt.registerLazySingleton<NavigationRepository>(() => NavigationRepositoryImpl());
+}

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:spender_tracker/features/auth/domain/model/user_model.dart';
 
-enum UserStatus { initial, loading, success, error }
+enum UserStatus { initial, loading, success, error, logout }
 
 class UserState extends Equatable {
   final UserStatus status;
