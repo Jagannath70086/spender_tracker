@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spender_tracker/core/api/api_client.dart';
+import 'package:spender_tracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:spender_tracker/features/profile/sub_features/about_us/data/datasource/app_info_remote_datasource.dart';
 import 'package:spender_tracker/features/profile/sub_features/about_us/data/repository/app_info_repository_impl.dart';
 import 'package:spender_tracker/features/profile/sub_features/about_us/domain/repository/app_info_repository.dart';
@@ -66,6 +67,7 @@ void registerBloc(){
   getIt.registerFactory(() => ThemeBloc(getThemeUseCase: getIt(), saveThemeUseCase: getIt()));
   getIt.registerFactory(() => NavigationBloc(repository: getIt()));
   getIt.registerFactory(() => DashboardBloc());
+  getIt.registerFactory(() => ProfileBloc());
 }
 
 Future<void> registerSharedPreferences() async {

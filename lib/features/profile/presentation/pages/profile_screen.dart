@@ -4,6 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_bloc.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_event.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_state.dart';
+import 'package:spender_tracker/features/profile/presentation/bloc/profile_bloc.dart';
+import 'package:spender_tracker/features/profile/presentation/bloc/profile_event.dart';
+import 'package:spender_tracker/features/profile/sub_features/about_us/presentation/pages/about_us.dart';
+import 'package:spender_tracker/features/profile/sub_features/contact_us/presentation/pages/contact_us.dart';
 import 'package:spender_tracker/features/profile/sub_features/update_profile/presentation/pages/update_profile.dart';
 import 'package:spender_tracker/features/theme/presentation/bloc/theme_bloc.dart';
 import 'package:spender_tracker/features/theme/presentation/bloc/theme_events.dart';
@@ -113,19 +117,21 @@ class ProfileScreen extends StatelessWidget {
                 _ProfileSwitchTile(
                   icon: Icons.swipe,
                   label: "Enable Swipe Actions",
-                  value: swipeEnabled,
-                  onChanged: (val) {},
+                  value: context.select((ProfileBloc bloc) => bloc.state.isSwipeActionsEnabled),
+                  onChanged: (val) => context.read<ProfileBloc>().add(ToggleSwipeAction()),
                 ),
                 _ProfileActionTile(
                   icon: Icons.help_outline,
                   label: "Help & Support",
-                  onTap: () {},
+                  onTap: () {
+                    context.push(HelpSupportPage.route);
+                  },
                 ),
                 _ProfileActionTile(
                   icon: Icons.info_outline,
                   label: "About Us",
                   onTap: () {
-                    context.push('/about-us');
+                    context.push(AboutUsPage.route);
                   },
                 ),
                 _ProfileActionTile(

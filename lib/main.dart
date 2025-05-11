@@ -5,6 +5,7 @@ import 'package:spender_tracker/core/di/get_it.dart';
 import 'package:spender_tracker/core/router/app_router.dart';
 import 'package:spender_tracker/core/theme/app_theme.dart';
 import 'package:spender_tracker/core/ui/widgets/update_dialog.dart';
+import 'package:spender_tracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:spender_tracker/features/profile/sub_features/about_us/presentation/bloc/app_info_bloc.dart';
 import 'package:spender_tracker/features/profile/sub_features/about_us/presentation/bloc/app_info_event.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_bloc.dart';
@@ -36,6 +37,7 @@ Future<void> main() async {
         BlocProvider(
           create: (context) => getIt<AppInfoBloc>()..add(FetchAppInfo()),
         ),
+        BlocProvider(create: (context) => getIt<ProfileBloc>())
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
         builder: (context, state) {
@@ -44,7 +46,6 @@ Future<void> main() async {
             theme: AppTheme.getTheme(false),
             darkTheme: AppTheme.getTheme(true),
             themeMode: state.themeEntity?.themeMode ?? ThemeMode.system,
-            debugShowCheckedModeBanner: false,
             builder: (context, router) {
               return BlocListener<AppInfoBloc, AppInfoState>(
                 listenWhen:
