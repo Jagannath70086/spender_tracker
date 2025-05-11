@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:spender_tracker/features/auth/presentation/pages/auth_page.dart';
 import 'package:spender_tracker/features/home/presentation/pages/home_page.dart';
-import 'package:spender_tracker/features/profile/presentation/pages/update_profile.dart';
+import 'package:spender_tracker/features/profile/sub_features/about_us/presentation/pages/about_us.dart';
+import 'package:spender_tracker/features/profile/sub_features/update_profile/presentation/pages/update_profile.dart';
 
 import '../../splash_page.dart';
 
@@ -30,6 +31,10 @@ class AppRouter {
       GoRoute(
         path: UpdateProfile.route,
         builder: (context, state) => const UpdateProfile(),
+      ),
+      GoRoute(
+        path: AboutUsPage.route,
+        builder: (context, state) => const AboutUsPage(),
       ),
     ],
   );

@@ -10,10 +10,6 @@ import 'package:spender_tracker/features/home/presentation/pages/banks/banks_scr
 import 'package:spender_tracker/features/home/presentation/pages/cards/presentation/pages/cards_screen.dart';
 import 'package:spender_tracker/features/dashboard/presentation/pages/dashboard_screen.dart';
 import 'package:spender_tracker/features/profile/presentation/pages/profile_screen.dart';
-import 'package:spender_tracker/features/theme/domain/entity/theme_entity.dart';
-import 'package:spender_tracker/features/theme/presentation/bloc/theme_bloc.dart';
-import 'package:spender_tracker/features/theme/presentation/bloc/theme_events.dart';
-import 'package:spender_tracker/features/theme/presentation/bloc/theme_state.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -29,20 +25,6 @@ class HomePage extends StatelessWidget {
               scrolledUnderElevation: 0,
               title: _getTitleAppbar(state.selectedItemId),
               actions: [
-                BlocBuilder<ThemeBloc, ThemeState>(
-                  builder: (context, state) {
-                    return IconButton(
-                      onPressed: () {
-                        context.read<ThemeBloc>().add(ToggleThemeEvent());
-                      },
-                      icon: Icon(
-                        state.themeEntity?.themeType == ThemeType.dark
-                            ? Icons.light_mode
-                            : Icons.dark_mode,
-                      ),
-                    );
-                  },
-                ),
               ],
             ),
             body: _getScreenForNavItem(state.selectedItemId),
@@ -93,5 +75,4 @@ class HomePage extends StatelessWidget {
         return Text('Dashboard', style: AppTextStyles.headlineMedium);
     }
   }
-
 }

@@ -1,10 +1,7 @@
-enum ThemeType{
-  dark,
-  light
-}
+import 'package:flutter/material.dart';
 
 class ThemeEntity {
-  final ThemeType themeType;
+  final ThemeMode themeMode;
 
-  ThemeEntity({required this.themeType});
+  ThemeEntity({required this.themeMode});
 }

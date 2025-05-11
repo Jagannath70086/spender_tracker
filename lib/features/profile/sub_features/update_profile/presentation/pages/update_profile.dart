@@ -9,7 +9,7 @@ import 'package:spender_tracker/features/auth/presentation/bloc/user_state.dart'
 class UpdateProfile extends StatelessWidget {
   const UpdateProfile({super.key});
 
-  static final String route = '/profile-update';
+  static const String route = '/profile-update';
 
   @override
   Widget build(BuildContext context) {
@@ -41,85 +41,76 @@ class UpdateProfile extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     Hero(
-                      tag: 'profile-picture',
-                      child: GestureDetector(
-                        onTap: () => _showImagePickerBottomSheet(context),
-                        child: Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, 5),
+                      tag: 'profile-image',
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(bottom: 10),
+                            padding: const EdgeInsets.all(2),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.1),
+                                  blurRadius: 10,
+                                  spreadRadius: 1,
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(75),
+                              child: Container(
+                                width: 150,
+                                height: 150,
+                                color: Colors.white,
+                                child:
+                                    userState.userModel?.photoUrl != null
+                                        ? Image.network(
+                                          userState.userModel?.photoUrl ?? '',
+                                          fit: BoxFit.cover,
+                                        )
+                                        : Image.network(
+                                          'https://i.pravatar.cc/300',
+                                          fit: BoxFit.cover,
+                                        ),
                               ),
-                            ],
+                            ),
                           ),
-                          child: Stack(
-                            clipBehavior: Clip.none,
-                            children: [
-                              Container(
+                          Positioned(
+                            bottom: 5,
+                            right: 5,
+                            child: GestureDetector(
+                              onTap: () => _showImagePickerBottomSheet(context),
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
+                                  color: const Color(0xFF9b87f5),
                                   border: Border.all(
-                                    color: theme.cardColor,
-                                    width: 4,
-                                  ),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child:
-                                      userState.userModel?.photoUrl != null
-                                          ? Image.network(
-                                            userState.userModel?.photoUrl ?? '',
-                                            width: 120,
-                                            height: 120,
-                                            fit: BoxFit.cover,
-                                          )
-                                          : const Image(
-                                            image: NetworkImage(
-                                              'https://i.pravatar.cc/300',
-                                            ),
-                                            width: 120,
-                                            height: 120,
-                                            fit: BoxFit.cover,
-                                          ),
-                                ),
-                              ),
-
-                              Positioned(
-                                bottom: 0,
-                                right: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.primary,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: theme.cardColor,
-                                      width: 2,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: theme.colorScheme.primary
-                                            .withValues(alpha: 0.3),
-                                        blurRadius: 8,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: const Icon(
-                                    Icons.camera_alt_rounded,
                                     color: Colors.white,
-                                    size: 16,
+                                    width: 2,
                                   ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.1,
+                                      ),
+                                      blurRadius: 5,
+                                      spreadRadius: 1,
+                                    ),
+                                  ],
+                                ),
+                                child: const Icon(
+                                  Icons.camera_alt_rounded,
+                                  color: Colors.white,
+                                  size: 22,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 40),
@@ -153,13 +144,12 @@ class UpdateProfile extends StatelessWidget {
                     const SizedBox(height: 40),
 
                     ElevatedButton(
-                      onPressed: () async {
-                        _showLoadingDialog(context);
-                        final navigator = Navigator.of(context);
-                        await Future.delayed(Duration(seconds: 1));
-                          navigator.pop();
-
-                          _showSuccessMessage(context);
+                      onPressed: () {
+                        // _showLoadingDialog(context);
+                        // final navigator = Navigator.of(context);
+                        // navigator.pop();
+                        //
+                        // _showSuccessMessage(context);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.primary,
@@ -302,9 +292,12 @@ class UpdateProfile extends StatelessWidget {
               children: [
                 CircularProgressIndicator(),
                 SizedBox(width: 24),
-                Text('Updating profile...', style: TextStyle(
-                  color: Theme.of(context).colorScheme.primary
-                )),
+                Text(
+                  'Updating profile...',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
               ],
             ),
           ),
@@ -330,7 +323,6 @@ class UpdateProfile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(15),
         duration: const Duration(seconds: 3),
-
       ),
     );
   }

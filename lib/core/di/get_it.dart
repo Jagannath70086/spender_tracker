@@ -1,6 +1,10 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spender_tracker/core/api/api_client.dart';
+import 'package:spender_tracker/features/profile/sub_features/about_us/data/datasource/app_info_remote_datasource.dart';
+import 'package:spender_tracker/features/profile/sub_features/about_us/data/repository/app_info_repository_impl.dart';
+import 'package:spender_tracker/features/profile/sub_features/about_us/domain/repository/app_info_repository.dart';
+import 'package:spender_tracker/features/profile/sub_features/about_us/presentation/bloc/app_info_bloc.dart';
 import 'package:spender_tracker/features/auth/data/datasource/auth_remote_datasource.dart';
 import 'package:spender_tracker/features/auth/data/datasource/user_remote_datasource.dart';
 import 'package:spender_tracker/features/auth/data/repository/auth_repository_impl.dart';
@@ -42,6 +46,8 @@ void registerDatasource(){
   getIt.registerSingleton(AuthRemoteDatasource(dio: dio));
   getIt.registerSingleton(UserRemoteDatasource(dio: dioWithTokenInterceptor));
 
+  getIt.registerSingleton(AppInfoRemoteDataSource(dio: dio));
+
   getIt.registerSingleton(ThemeLocalDataSource(sharedPreferences: getIt()));
 }
 
@@ -49,11 +55,14 @@ void registerRepository(){
   getIt.registerSingleton<AuthRepository>(AuthRepositoryImpl(authRemoteDatasource: getIt()));
   getIt.registerSingleton<UserRepository>(UserRepositoryImpl(userRemoteDatasource: getIt()));
 
+  getIt.registerSingleton<AppInfoRepository>(AppInfoRepositoryImpl(remoteDataSource: getIt()));
+
   getIt.registerSingleton<ThemeRepository>(ThemeRepositoryImpl(themeLocalDataSource: getIt()));
 }
 
 void registerBloc(){
   getIt.registerFactory(() => UserBloc(authRepository: getIt(), userRepository: getIt()));
+  getIt.registerFactory(() => AppInfoBloc(appInfoRepository: getIt()));
   getIt.registerFactory(() => ThemeBloc(getThemeUseCase: getIt(), saveThemeUseCase: getIt()));
   getIt.registerFactory(() => NavigationBloc(repository: getIt()));
   getIt.registerFactory(() => DashboardBloc());
