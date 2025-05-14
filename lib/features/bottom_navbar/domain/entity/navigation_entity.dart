@@ -5,6 +5,5 @@ class NavigationEntity{
   final String label;
   final IconData icon;
 
-  NavigationEntity({required this.id, required this.label, required this.icon});
-
+  const NavigationEntity({required this.id, required this.label, required this.icon});
 }

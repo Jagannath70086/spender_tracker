@@ -120,24 +120,33 @@ class UpdateProfile extends StatelessWidget {
                       children: [
                         DefaultTextField(
                           label: 'Full Name',
-                          initialValue: userState.userModel?.name ?? '',
+                          controller: TextEditingController(text: userState.userModel?.name ?? ''),
                           icon: Icons.person_outline,
-                          onChanged: (value) {},
+                          onChanged: (value) {
+                            // handle value change if needed
+                          },
+                          validator: (value) => value == null || value.isEmpty ? 'Please enter your name' : null,
                         ),
                         const SizedBox(height: 20),
+
                         DefaultTextField(
                           label: 'Email',
+                          controller: TextEditingController(text: userState.userModel?.email ?? ''),
                           enabled: false,
-                          initialValue: userState.userModel?.email ?? '',
                           icon: Icons.email_outlined,
-                          onChanged: (value) {},
+                          onChanged: null,
                         ),
                         const SizedBox(height: 20),
+
                         DefaultTextField(
                           label: 'Phone Number',
-                          initialValue: userState.userModel?.phoneNo ?? '',
+                          controller: TextEditingController(text: userState.userModel?.phoneNo ?? ''),
                           icon: Icons.phone_outlined,
-                          onChanged: (value) {},
+                          keyboardType: TextInputType.phone,
+                          onChanged: (value) {
+                            // handle phone input
+                          },
+                          validator: (value) => value == null || value.length < 10 ? 'Enter a valid phone number' : null,
                         ),
                       ],
                     ),

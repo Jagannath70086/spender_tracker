@@ -14,4 +14,6 @@ class AppColors {
   static const Color textColorDark = Color(0xFFE1E1F5);
   static const Color surfaceDark = Color(0xFF1E1E1E);
   static const Color errorColorDark = Color(0xFFFF6868);
+
+  static const Color secondary = Color(0xFF9b87f5);
 }

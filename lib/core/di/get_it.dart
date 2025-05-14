@@ -1,6 +1,14 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:spender_tracker/core/api/api_client.dart';
+import 'package:spender_tracker/features/banks/data/datasource/bank_remote_datasource.dart';
+import 'package:spender_tracker/features/banks/data/repository/bank_repository_impl.dart';
+import 'package:spender_tracker/features/banks/domain/repository/bank_repository.dart';
+import 'package:spender_tracker/features/banks/presentation/bloc/bank_bloc.dart';
+import 'package:spender_tracker/features/cards/data/datasource/card_remote_datasource.dart';
+import 'package:spender_tracker/features/cards/data/repository/card_repository_impl.dart';
+import 'package:spender_tracker/features/cards/domain/repository/card_repository.dart';
+import 'package:spender_tracker/features/cards/presentation/bloc/card_bloc.dart';
 import 'package:spender_tracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:spender_tracker/features/profile/sub_features/about_us/data/datasource/app_info_remote_datasource.dart';
 import 'package:spender_tracker/features/profile/sub_features/about_us/data/repository/app_info_repository_impl.dart';
@@ -48,6 +56,9 @@ void registerDatasource(){
   getIt.registerSingleton(UserRemoteDatasource(dio: dioWithTokenInterceptor));
 
   getIt.registerSingleton(AppInfoRemoteDataSource(dio: dio));
+  
+  getIt.registerSingleton(CardRemoteDatasource(dio: dioWithTokenInterceptor));
+  getIt.registerSingleton(BankRemoteDatasource(dio: dioWithTokenInterceptor));
 
   getIt.registerSingleton(ThemeLocalDataSource(sharedPreferences: getIt()));
 }
@@ -57,6 +68,9 @@ void registerRepository(){
   getIt.registerSingleton<UserRepository>(UserRepositoryImpl(userRemoteDatasource: getIt()));
 
   getIt.registerSingleton<AppInfoRepository>(AppInfoRepositoryImpl(remoteDataSource: getIt()));
+
+  getIt.registerSingleton<CardRepository>(CardRepositoryImpl(cardRemoteDatasource: getIt()));
+  getIt.registerSingleton<BankRepository>(BankRepositoryImpl(bankRemoteDatasource: getIt()));
 
   getIt.registerSingleton<ThemeRepository>(ThemeRepositoryImpl(themeLocalDataSource: getIt()));
 }
@@ -68,6 +82,8 @@ void registerBloc(){
   getIt.registerFactory(() => NavigationBloc(repository: getIt()));
   getIt.registerFactory(() => DashboardBloc());
   getIt.registerFactory(() => ProfileBloc());
+  getIt.registerFactory(() => CardBloc(cardRepository: getIt()));
+  getIt.registerFactory(() => BankBloc(bankRepository: getIt()));
 }
 
 Future<void> registerSharedPreferences() async {

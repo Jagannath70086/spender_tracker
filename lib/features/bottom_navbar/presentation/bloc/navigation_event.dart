@@ -1,17 +1,13 @@
-import 'package:equatable/equatable.dart';
+abstract class NavigationEvent{
 
-class NavigationEvent extends Equatable{
-  const NavigationEvent();
-
-  @override
-  List<Object?> get props => [];
 }
 
-class NavigationItemSelected extends NavigationEvent {
+class GetNavigationItemsEvent extends NavigationEvent {
+
+}
+
+class NavigationItemSelectedEvent extends NavigationEvent {
   final String itemId;
 
-  const NavigationItemSelected(this.itemId);
-
-  @override
-  List<Object> get props => [itemId];
+  NavigationItemSelectedEvent(this.itemId);
 }

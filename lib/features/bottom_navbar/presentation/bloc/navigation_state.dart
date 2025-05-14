@@ -1,20 +1,24 @@
 import 'package:equatable/equatable.dart';
 import 'package:spender_tracker/features/bottom_navbar/domain/entity/navigation_entity.dart';
 
-abstract class NavigationState extends Equatable {
-  const NavigationState();
-
-  @override
-  List<Object> get props => [];
-}
-
-class NavigationLoaded extends NavigationState {
-  final List<NavigationEntity> items;
+class NavigationState extends Equatable {
+  final List<NavigationEntity>? items;
   final String selectedItemId;
 
-  const NavigationLoaded({required this.items, required this.selectedItemId});
+  const NavigationState._({this.items, required this.selectedItemId});
 
+  factory NavigationState.initial() => NavigationState._(selectedItemId: 'dashboard');
+
+  NavigationState copyWith({
+    List<NavigationEntity>? items,
+    String? selectedItemId,
+  }) {
+    return NavigationState._(
+      items: items ?? this.items,
+      selectedItemId: selectedItemId ?? this.selectedItemId,
+    );
+  }
 
   @override
-  List<Object> get props => [items, selectedItemId];
+  List<Object?> get props => [items, selectedItemId];
 }

@@ -2,42 +2,43 @@ import 'package:flutter/material.dart';
 
 class DefaultTextField extends StatelessWidget {
   final String label;
-  final String initialValue;
+  final TextEditingController controller;
   final int? maxLines;
-  final ValueChanged<String> onChanged;
+  final int? maxLength;
+  final ValueChanged<String>? onChanged;
   final IconData icon;
   final bool enabled;
+  final TextInputType keyboardType;
+  final String? Function(String?)? validator;
 
   const DefaultTextField({
-    required this.label,
-    required this.initialValue,
-    required this.onChanged,
-    this.maxLines = 1,
-    required this.icon,
-    this.enabled = true,
     super.key,
+    required this.label,
+    required this.controller,
+    required this.icon,
+    this.onChanged,
+    this.maxLines = 1,
+    this.maxLength,
+    this.enabled = true,
+    this.keyboardType = TextInputType.text,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 10,
-            spreadRadius: 1,
-          ),
-        ],
-      ),
-      child: TextField(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
         enabled: enabled,
+        maxLines: maxLines,
+        maxLength: maxLength,
+        keyboardType: keyboardType,
+        onChanged: onChanged,
+        validator: validator,
         style: TextStyle(
-          color: enabled ? Colors.grey.shade700 : Colors.grey.shade400,
+          color: enabled ? Colors.grey.shade800 : Colors.grey.shade400,
         ),
-        controller: TextEditingController(text: initialValue),
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
           labelText: label,
@@ -59,9 +60,8 @@ class DefaultTextField extends StatelessWidget {
           ),
           floatingLabelBehavior: FloatingLabelBehavior.never,
           filled: true,
-          fillColor: enabled ? Colors.grey.shade50 : Colors.grey.shade500,
+          fillColor: enabled ? Colors.grey.shade200 : Colors.grey.shade300,
         ),
-        maxLines: maxLines,
       ),
     );
   }

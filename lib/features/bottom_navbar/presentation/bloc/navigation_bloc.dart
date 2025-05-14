@@ -7,20 +7,17 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
   final NavigationRepository repository;
 
   NavigationBloc({required this.repository})
-      : super(NavigationLoaded(
-      items: repository.getNavigationItems(),
-      selectedItemId: 'dashboard')) {
-    on<NavigationItemSelected>(_onNavigationItemSelected);
+      : super(NavigationState.initial()) {
+    on<GetNavigationItemsEvent>(_onGetNavigationItemsEvent);
+    on<NavigationItemSelectedEvent>(_onNavigationItemSelectedEvent);
   }
 
-  void _onNavigationItemSelected(
-      NavigationItemSelected event, Emitter<NavigationState> emit) {
-    if (state is NavigationLoaded) {
-      final currentState = state as NavigationLoaded;
-      emit(NavigationLoaded(
-        items: currentState.items,
-        selectedItemId: event.itemId,
-      ));
-    }
+  void _onNavigationItemSelectedEvent(
+      NavigationItemSelectedEvent event, Emitter<NavigationState> emit) {
+    emit(state.copyWith(selectedItemId: event.itemId));
   }
+
+  void _onGetNavigationItemsEvent(GetNavigationItemsEvent event, Emitter<NavigationState> emit){
+  emit(state.copyWith(items: repository.getNavigationItems()));
+}
 }

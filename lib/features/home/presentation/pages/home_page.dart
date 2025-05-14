@@ -3,13 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spender_tracker/core/theme/app_text_styles.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_bloc.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_state.dart';
+import 'package:spender_tracker/features/banks/presentation/pages/banks_screen.dart';
 import 'package:spender_tracker/features/bottom_navbar/presentation/bloc/navigation_bloc.dart';
 import 'package:spender_tracker/features/bottom_navbar/presentation/bloc/navigation_state.dart';
 import 'package:spender_tracker/features/bottom_navbar/presentation/widgets/navbar.dart';
-import 'package:spender_tracker/features/home/presentation/pages/banks/banks_screen.dart';
-import 'package:spender_tracker/features/home/presentation/pages/cards/presentation/pages/cards_screen.dart';
 import 'package:spender_tracker/features/dashboard/presentation/pages/dashboard_screen.dart';
+import 'package:spender_tracker/features/cards/presentation/pages/cards_screen.dart';
 import 'package:spender_tracker/features/profile/presentation/pages/profile_screen.dart';
+import 'package:spender_tracker/features/theme/presentation/bloc/theme_bloc.dart';
+import 'package:spender_tracker/features/theme/presentation/bloc/theme_events.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,21 +21,28 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<NavigationBloc, NavigationState>(
       builder: (context, state) {
-        if (state is NavigationLoaded) {
+        final items = state.items ?? [];
+
+        if (items.isEmpty) {
           return Scaffold(
-            appBar: AppBar(
-              scrolledUnderElevation: 0,
-              title: _getTitleAppbar(state.selectedItemId),
-              actions: [
-              ],
-            ),
-            body: _getScreenForNavItem(state.selectedItemId),
-            bottomNavigationBar: const CustomFloatingNavBar(),
+            appBar: AppBar(title: Text('Home'), scrolledUnderElevation: 0),
+            body: Center(child: CircularProgressIndicator()),
           );
         }
         return Scaffold(
-          appBar: AppBar(title: Text('Home'), scrolledUnderElevation: 0),
-          body: Center(child: CircularProgressIndicator()),
+          appBar: AppBar(
+            scrolledUnderElevation: 0,
+            title: _getTitleAppbar(state.selectedItemId),
+            actions: [
+              IconButton(
+                onPressed:
+                    () => context.read<ThemeBloc>().add(ToggleThemeEvent()),
+                icon: Icon(Icons.add),
+              ),
+            ],
+          ),
+          body: _getScreenForNavItem(state.selectedItemId),
+          bottomNavigationBar: const CustomFloatingNavBar(),
         );
       },
     );

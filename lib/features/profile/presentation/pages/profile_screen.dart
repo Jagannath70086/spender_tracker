@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_bloc.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_event.dart';
 import 'package:spender_tracker/features/auth/presentation/bloc/user_state.dart';
+import 'package:spender_tracker/features/banks/presentation/sub_features/add_bank/presentation/pages/add_bank.dart';
+import 'package:spender_tracker/features/cards/presentation/sub_features/add_card/presentation/pages/add_card.dart';
 import 'package:spender_tracker/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:spender_tracker/features/profile/presentation/bloc/profile_event.dart';
 import 'package:spender_tracker/features/profile/sub_features/about_us/presentation/pages/about_us.dart';
@@ -19,10 +21,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    final bool swipeEnabled = true;
-
-    return Scaffold(
-      body: CustomScrollView(
+    return CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
@@ -93,14 +92,18 @@ class ProfileScreen extends StatelessWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate([
                 _ProfileActionTile(
-                  icon: Icons.account_balance,
-                  label: "Add Bank",
-                  onTap: () {},
-                ),
-                _ProfileActionTile(
                   icon: Icons.credit_card,
                   label: "Add Card",
-                  onTap: () {},
+                  onTap: () {
+                    context.push(AddCard.route);
+                  },
+                ),
+                _ProfileActionTile(
+                  icon: Icons.account_balance,
+                  label: "Add Bank",
+                  onTap: () {
+                    context.push(AddBank.route);
+                  },
                 ),
                 _ProfileActionTile(
                   icon: Icons.money_off,
@@ -117,8 +120,12 @@ class ProfileScreen extends StatelessWidget {
                 _ProfileSwitchTile(
                   icon: Icons.swipe,
                   label: "Enable Swipe Actions",
-                  value: context.select((ProfileBloc bloc) => bloc.state.isSwipeActionsEnabled),
-                  onChanged: (val) => context.read<ProfileBloc>().add(ToggleSwipeAction()),
+                  value: context.select(
+                    (ProfileBloc bloc) => bloc.state.isSwipeActionsEnabled,
+                  ),
+                  onChanged:
+                      (val) =>
+                          context.read<ProfileBloc>().add(ToggleSwipeAction()),
                 ),
                 _ProfileActionTile(
                   icon: Icons.help_outline,
@@ -147,8 +154,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 
   void onLogoutPressed(BuildContext context) {
@@ -437,7 +443,10 @@ Widget _buildModernThemeOption(
                       colors: backgroundColors,
                     ),
                   ),
-                  padding: isSystemTheme ? const EdgeInsets.all(8) : const EdgeInsets.all(16),
+                  padding:
+                      isSystemTheme
+                          ? const EdgeInsets.all(8)
+                          : const EdgeInsets.all(16),
                   child:
                       isSystemTheme
                           ? _buildSystemThemePreview(
